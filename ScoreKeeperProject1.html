@@ -1,0 +1,130 @@
+<!-- Question need when clicked on player1 this adds the score to player1 and so for player2.
+If we reached playing to 5 this means game is over and if we click on player1 or 2 this won't add any score then we reset the game by clicking reset button then if we changed the number of playing to 5 to 7 or so on this make that particular number as gameover end point-->
+<html>
+<head>
+    <title>Score Keeper project</title>
+    <style>
+        .winnercolor{
+/*            winner score color changes to green*/
+                color:green; 
+        }
+        legend{
+            color:darkmagenta;
+        }
+        button{
+            color:firebrick;
+            background:yellow;
+        }
+        .img
+        {
+            
+            background-image: url(../../../Frontend-playground/Shivya/Task/public/img/1.jpg);
+            width: 50%;
+            height:200px;
+            background-repeat: no-repeat;
+            border:2px solid darkblue;
+        }
+        fieldset{
+            background-color:skyblue;
+            
+                /*           background-position: right*/
+        }
+        p{
+            text-align:center;
+        }
+    </style>
+    </head>
+    <body>
+        <fieldset class="img">
+<!--            <img src="../../../Frontend-playground/Shivya/Task/public/img/1.jpg">-->
+            <legend><center><b>SCORE KEEPER DORAEMON</b></center></legend>
+            <center><h1><span id="sp1">0</span>  to  <span id ="sp2">0</span></h1></center>
+        <p>Playing to : <span id = "inputchange">5</span></p>
+            <center><input type="number" placeholder="Enter gaming point"></center>
+           <br> <center>
+        <button id="p1">Player1</button>
+        <button id="p2">Player2</button>
+        <button id="reset">Reset</button>
+            </center>
+        <script type="text/javascript">
+        var p1score=0; //keeps the count of p1
+        var gameover= false; //when the game is over the reset button would make the var gameover again false
+        var winningScore=5; //comparing both the players with 5
+            
+        var buttonp1 = document.getElementById("p1");
+        console.log(buttonp1);                                  //selecting p1
+        var buttonp2 = document.getElementById("p2");
+                console.log(buttonp1);                          //selecting p2
+        var h1 = document.querySelector("#sp1");                //selecting h1 first 0
+        buttonp1.addEventListener("click", function(){                 //adding event
+            if(!gameover)
+                {
+                    p1score++;
+                    console.log(p1score,winningScore); //we can print both using commas
+                    if(p1score === winningScore)
+                        {
+                            h1.classList.add("winnercolor");
+                            alert("Player 1 is the winner");
+                            gameover=true; //this stmt prevents us from adding more score to the p1 i.e if gameover is true then whole if code                              won't work
+                        }
+            h1.textContent=p1score; //initially when no span element was added this makes h1 from 0to0 to only 0 so if we want to keep whole h1 intact that is we want only first 0 to change and keep other to 0  to its same place so use span tag
+                }
+              console.log(p1score);
+            });
+        
+        //PLAYER2
+        var hh = document.querySelector("#sp2");
+        console.log(hh); 
+        var p2score=0;
+        buttonp2.addEventListener("click", function(){
+            if(!gameover)
+                {
+                    p2score++;
+                    if(p2score === winningScore)
+                        {
+                            console.log("Player 2 is the winner");
+                            hh.classList.add("winnercolor");
+                            gameover=true; //neither p1 nor p2 could change the score anymore
+                        }
+                }
+            hh.textContent=p2score;
+            console.log(p2score);
+        });
+        
+        //RESET
+        //reset fn changes the value of p1 and p2 to 0 each
+        //reset only when game is over i.e compare the winning score with both the players
+            var reset = document.getElementById("reset");
+            reset.addEventListener("click",function(){
+                resett();
+            });
+                function resett()
+                {
+            p1score=0; //need to put both p1 and p2 scores back to 0 if we have not put this initialization then after reset
+            p2score=0; //it would continue numbering after 5 i.e goes on from 6
+            h1.textContent=0;
+            hh.textContent=0;
+            h1.classList.remove("winnercolor");
+            hh.classList.remove("winnercolor");
+                gameover=false;
+        }            
+                
+
+            
+        //INPUT CHANGE
+        //now if i want to change the winningscore pt from 5 to any other number
+            var input = document.querySelector("input");
+            var p = document.querySelector("p");
+            var inputt = document.getElementById("inputchange");
+            input.addEventListener("change" , function(){ //click event isn't useful because we could change the value after click but if i type it won't take any change so another event used change
+                //change event will run any time when the value changes doesn't matter how it is changed
+                inputt.textContent=this.value;  //used this keyword which refers to the current value
+                winningScore=Number(input.value);//getting input value and placing it inputt //but this gives us the string value so change it to number
+                //reset fn will every time if we try to change the value in the middle of the game in the input
+                resett(); //if we change the input value in the middle of the game like to 3 and we already pass the value 3 so it won't work so we call the reset function that resets the value
+            });
+        </script>
+        <footer style="text-align: right">BY SHIVYA</footer>
+        </fieldset>
+    </body>
+</html>

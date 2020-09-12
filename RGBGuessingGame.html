@@ -1,0 +1,332 @@
+<html>
+<head>
+    <title>COLOR game</title>
+    <style>
+        .square{
+            width:30%;
+            background: purple;
+/*            display: inline;*/
+            padding-bottom: 30%;
+/*            float left  makes the square in the line and margin makes squares 3 3 in each line as initially were in one line*/
+            float:left; 
+            margin:1.66%;
+/*            to shape our squares if we want then to be rounded */
+            border-radius: 15%;
+/*            fading effect*/
+            transition: background 0.5s;
+/*            there maybe some browsers in which transition effect won't work so we use put it in buttons effect also */
+/*            for safari*/
+            -webkit-transition:background 0.5s;
+/*            for firefox*/
+            -moz-transition:background 0.5s;
+        }
+/*        as squares took whole screen so styling container*/
+        .container{
+            max-width: 600px;
+/*            0 for top and bottom and auto for left and right this makes them equal */
+            margin:20px auto; 
+        }
+        body{
+            background-color: #232323;
+/*            for the spacing around the h1 portion that is left top*/
+            margin:0px; 
+            font-family:sans-serif;
+        }
+        h1{
+            color:white;
+            text-align: center;
+            background-color: steelblue;
+            line-height: 1.1;
+/*           removes spacing between h1 and buttons border*/
+            margin:0px;
+/*            this makes the text in h1 to be bolder, lighter or any kind of size*/
+            font-weight:normal;
+/*            this makes the heading that we have written in h1 tag to uppercase */
+            text-transform:uppercase;
+/*            adding padding at the top and the bottom*/
+            padding: 20px 0;
+        }
+        #sp{
+            font-size:200%;
+        }
+/*        removing buttons border, background*/
+        button{
+            border: none;
+            background: none;
+            text-transform: uppercase;
+/*            we want the button to take whole white border space so we have put height to 100%*/
+            height: 100%;
+            font-weight: 700;
+            color: steelblue;
+/*            this makes spacing*/
+            letter-spacing: 1px;
+            font-size: inherit;
+/*            how to animate*/
+/*            fade-over effect*/
+/*            all as we want on all buttons and second is for how long*/
+            transition: all 1.0s;
+/*            for removing the blue outline that appears when we click the button*/
+            outline: none;
+        }
+/*        hover effect*/
+        button:hover 
+        {
+            color : white;
+            background:steelblue;
+        }
+/*
+            span{
+                color:white;
+                padding: 21px;
+                font size:34px;
+        }
+*/
+        #stripe{
+            background: white;
+            height: 30px;
+            text-align: center;
+            color:black;
+        }
+/*        this class is used for the btns easy and hard that makes them look clicked when we click them*/
+        .ONOff{
+            color : white;
+            background:steelblue;
+        }
+        #message{
+/*            this would provide us with the space*/
+            display:inline-block;
+            width:20%;
+        }
+        
+    </style>
+    </head>
+    <body>
+        <h1>THE GREAT 
+            <br>
+            <span id="sp">rgb()</span> 
+            <br>
+            COLOR GAME</h1>
+        <div id = "stripe">
+            <button id="reset">New Colours</button>
+<!--            for displaying message if we click the color squares-->
+        <span id = "message"></span> 
+<!--
+initially was this but to avoid duplication as the code was almost similar so we have a class called mode to both
+            <button id="esn">Easy</button>
+            <button id="hdn" class="ONOff">Hard</button>
+-->
+            <button class="mode">Easy</button>
+            <button class="mode ONOff">Hard</button>
+        </div>
+<!--        need six grids so use containers -->
+        <div class="container">
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+        </div>
+        <script>
+            //initially used colors array
+//        var colors = [
+//                    "rgb(255, 0, 0)",
+//                    "rgb(255, 217, 0)",
+//                    "rgb(0, 255, 0)",
+//                    "rgb(0, 255, 217)",
+//                    "rgb(0, 0, 255)",
+//                    "rgb(255, 0, 217)"
+//]
+    //issue we face in this in easy mode when we click to play again it takes back to 6 colors but shows three squares and it could be that the pickcolor could not be on of those 3 squares so we need a variable that keeps track of all this so used numsquares
+                        var numsquares = 6;
+            //initially was var colors = generatingRandomcolors(6);
+            //now changing the colors array to generating random colors array
+            var colors = generatingRandomcolors(numsquares); //it takes single argument of how many length colors we want
+            var squares= document.querySelectorAll(".square"); //selecting squares 
+            var pickcolor= pickColors(); //pick a random color out of all the colors
+            var span = document.getElementById("sp"); //next we will select the rgb as the color code comes there 
+            span.textContent = pickcolor; // this changes RGB to color code 3
+            var h1 = document.querySelector("h1");
+            for(var i=0;i<squares.length;i++)
+                {
+                    squares[i].style.backgroundColor=colors[i]; //will give them colors through looping
+            //now we gonna compare the pickcolor with every color if it is wrong then that clicked color would be same as of body color
+                    squares[i].addEventListener("click",function(){
+                        var clickedcolor=this.style.backgroundColor;
+                        console.log(clickedcolor,pickcolor);
+                //comparing the clicked color and picked color
+                if(clickedcolor === pickcolor)
+                {
+                    //alert("correct");
+                    message.textContent="Correct!";
+                   changeColors(clickedcolor); //passing the function if we clicked the correct color
+                    h1.style.backgroundColor=clickedcolor; //changing the background color of h1 same as correct color
+                                    reset.textContent="Play Again?";
+
+                }
+                        else
+                             {
+                               //  alert("wrong");
+                                 //if don't match then that particular changes to background color
+                                this.style.backgroundColor="#232323";
+                                 message.textContent="Try Again!";
+                             }
+            });
+                }
+            var message = document.getElementById("message");
+            //this function runs when we click the right color and it chnages the all the square colors to that particular right color
+            function changeColors(color)
+            {
+                //loop through change colors to match the correct color
+                for(var i=0;i<squares.length;i++)
+                    {
+                        squares[i].style.backgroundColor=color;
+                    }
+            }
+            //for generating random colors out of the array that is changing rgb
+            function pickColors()
+            {
+                //pick a random number like 1,2 then use that number to access the color out of the  array and returns the color
+               var random = Math.round(Math.random() * colors.length); //Math.round is to get whole number //we multiply it with colors.length as sometimes we have 3 squares that is in easy mode and hard mode has six color
+                return colors[random]; // changes the rgb everytime
+            }
+            //now generating 6 random colors apart from mentioned in the array so we will assign colors array to the function that gives random colors
+            function generatingRandomcolors(num)
+            {
+                //make an array
+                var arr=[];
+                //add num random colors to array
+                for(var i=0;i<num;i++)
+                    {
+                        //get random color and push it into the arr
+                        arr.push(randomColor()); //generates six different colors
+                    }
+                //return that array
+                return arr;
+            }
+            //generating random colors test this by running on the console
+            function randomColor()
+            {
+                //need to pick red from 0 to 255
+                //also need to generate a number from 0-255
+               var r =  Math.round(Math.random() * 256);    //multiply by 256 as we are rounding down so we want 255 to be the greatest number     
+                //need to pick green from 0-255
+                var g =  Math.round(Math.random() * 256); 
+                //need to pick blue from 0-255
+                var b =  Math.round(Math.random() * 256); 
+                "rgb(r , g , b)"
+               return "rgb(" + r + ", " + g + ", " + b + ")"; //concatenating //return this one big string and would generate one random color 
+            }
+            var reset= document.querySelector("#reset");
+            reset.addEventListener("click",function(){
+                //initially whole code written inside reset fn was in the reset listener
+                resetmode();
+            });
+        //Easy and Hard Mode
+            //initially was selected seperately with ids in order to avoid duplication we used quaeryselectorall
+//            var easy = document.querySelector("#esn");
+//            var hard = document.querySelector("#hdn");
+            var modebuttons = document.querySelectorAll(".mode");
+            for(var i=0;i<modebuttons.length;i++)
+                {
+                    modebuttons[i].addEventListener("click",function(){
+                        modebuttons[0].classList.remove("ONOff");  //removing class from the buttons
+                        modebuttons[1].classList.remove("ONOff");
+                        this.classList.add("ONOff");  //adding to the one that we clicked on
+                        if(this.textContent === "Easy")   //that is the current clicked is 
+                            {
+                                numsquares=3;
+                            }
+                        else
+                            {
+                                numsquares=6;
+                            }
+                        //a ternary operator is also used as this.textContent === "Easy"?numsquares =3: numsquares=6;
+                        resetmode();
+                        //reset fn includes 
+                       // 👇
+                        //need to figure out how many squares to show
+                        //pick new colours
+                        //pick a new pickcolor
+                        //update page to reflect changes
+                    });
+                }
+            function resetmode(){
+                  //generate all new colours
+               colors= generatingRandomcolors(numsquares);
+                //pick a new random color from array
+                pickcolor=pickColors();
+                //change clicked color to match picked color
+                span.textContent=pickcolor; //i.e the span id sp of rgb that we have put inside the h1 tag
+                //change colors of squares
+                //looping through all the squares
+                for(var i= 0;i<squares.length;i++)
+                    {
+                        if(colors[i])
+                            {
+                                squares[i].style.display="block";
+                        squares[i].style.backgroundColor=colors[i];
+                            }
+                        else{
+                            squares[i].style.display="none";
+                        }
+                    }
+//                alert("clicked on the button");
+          //when button clicked again after getting the pickedcolor then we are resetting the background of h1 again to body color, btn to new colours again 
+                h1.style.backgroundColor="steelblue";
+                reset.textContent="New Colours";
+                //we want the message correct should not be displayed when we click play again
+                message.textContent="";
+            }
+            //easy and hard mode includes all duplicate code so to remove that we used above modebuttons and function reset
+//            easy.addEventListener("click", function(){
+////                alert("easy btn clicked");
+//                hard.classList.remove("ONOff");
+//                easy.classList.add("ONOff");
+//                numsquares=3;
+//                //for easy mode we want different random colors to be generated and we want three squares in easy mode
+//                colors=generatingRandomcolors(3);
+//                //picking a random color
+//                pickcolor=pickColors();
+//                //assigning rgb with the random pickcolor
+//                span.textContent=pickcolor;
+//                //now we want that the colors of first 3 squares in the first row to change so do this
+//                //by looping
+//                for(var i =0; i<squares.length;i++)
+//                {
+//                    //if there is next color
+//                    //check if color has that index
+//                    if(colors[i])
+//                        {
+//                            //this will happen on first three
+//                            //as colors as three items
+//                        squares[i].style.background=colors[i]; 
+//                        }
+//                     // if not then hide the three squares in the next row                   
+//                    //check it by clicking on the easy mode
+//                    else
+//                    {
+//                        squares[i].style.display="none";
+//                    }
+//                }
+//            });     
+//            hard.addEventListener("click", function(){
+////                alert("hard btn clicked");
+//                easy.classList.remove("ONOff");
+//                hard.classList.add("ONOff");
+//                numsquares=6;
+//                colors= generatingRandomcolors(6);
+//                pickcolor=pickColors();
+//                span.textContent=pickcolor;
+//                for(var i=0; i<squares.length;i++)
+//                    {                        
+//                                squares[i].style.backgroundColor=colors[i];
+//                            squares[i].style.display = "block";
+//                    }
+//            });
+//            easy.addEventListener("mouseover",function(){
+//                easy.style.color="steelblue";
+//            })
+        </script>
+    </body>
+</html>
