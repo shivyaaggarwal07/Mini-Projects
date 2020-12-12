@@ -1,0 +1,51 @@
+*{
+	padding : 0;
+	margin : 0;
+}
+
+#game{
+	width : 500px;
+	height:200px;
+	border: 1px solid black;
+}
+#character{
+	width:20px;
+	height:50px;
+	/*background-color: red;*/
+	position : relative;
+	/*box  height is 200px character is 50px so to move it down top 150px*/
+	top:150px; 
+}
+
+	/*adding animation to our character*/
+	.animate{
+	animation: jump 500ms;
+}
+/* Now I want my character to jump*/
+@keyframes jump {
+	/*character to jump a little in the air and then come back*/
+	0%{top:150px;}
+	30%{top:100px;}
+	70%{top:100px;}
+	100%{top:150px;}
+}
+
+
+#block
+{
+	width:20px;
+	height:20px;
+	/*background-color: blue;*/
+	position:relative;
+	top:130px;
+	left:480px;
+	/* adding linear as i don't want to just to zip it through the character*/
+	animation: block 1s infinite linear
+}
+
+/*to make our block move towards our character adding animation*/
+@keyframes block{
+	0%{left:480px;}
+	100%{left:-40px;}
+
+}
